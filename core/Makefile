@@ -218,7 +218,7 @@ endif
 	$(hide) TARGET_BUILD_TYPE="$(TARGET_BUILD_VARIANT)" \
 			TARGET_BUILD_FLAVOR="$(TARGET_PRODUCT)-$(TARGET_BUILD_VARIANT)" \
 			TARGET_DEVICE="$(TARGET_VENDOR_DEVICE_NAME)" \
-			SLIM_DEVICE="$(TARGET_DEVICE)" \
+			CARDINAL_DEVICE="$(TARGET_DEVICE)" \
 			PRODUCT_NAME="$(TARGET_VENDOR_PRODUCT_NAME)" \
 			PRODUCT_BRAND="$(PRODUCT_BRAND)" \
 			PRODUCT_DEFAULT_LOCALE="$(call get-default-product-locale,$(PRODUCT_LOCALES))" \
@@ -1861,7 +1861,7 @@ endif
 ifeq ($(WITH_GMS),true)
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
 else
-ifneq ($(SLIM_BUILD),)
+ifneq ($(CARDINAL_BUILD),)
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := true
 else
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
@@ -1870,7 +1870,7 @@ endif
 
 BOOT_ZIP_FROM_IMAGE_SCRIPT := ./build/tools/releasetools/boot_flash_from_image
 KERNEL_PATH := $(TARGET_KERNEL_SOURCE)/arch/arm/configs/$(TARGET_KERNEL_CONFIG)
-#BOOT_ZIP_OUT_FILE := Slim-Kernel-$(DEVICE).zip
+#BOOT_ZIP_OUT_FILE := Cardinal-Kernel-$(DEVICE).zip
 
 ifeq ($(TARGET_OTA_ASSERT_DEVICE),)
     $(INTERNAL_OTA_PACKAGE_TARGET): override_device := auto
@@ -1903,19 +1903,18 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-TARGET_PACKAGE := $(PRODUCT_OUT)/AOSP-RRO-$(PLATFORM_VERSION)-$(shell date +%Y%m%d)-$(TARGET_DEVICE)-$(USER).zip
+CARDINAL_TARGET_PACKAGE := $(PRODUCT_OUT)/Cardinal-AOSP-$(PLATFORM_VERSION)-$(shell date +%Y%m%d)-$(TARGET_DEVICE)-$(USER).zip
 
-.PHONY: otapackage bacon aosprro bootzip
+.PHONY: otapackage cardinal bootzip
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
-bacon: otapackage
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(TARGET_PACKAGE) > $(TARGET_PACKAGE).md5sum
+cardinal: otapackage
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CARDINAL_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(CARDINAL_TARGET_PACKAGE) > $(CARDINAL_TARGET_PACKAGE).md5sum
 	@echo -e ${CL_BLD}${CL_CYN}"===============================-Package complete-==============================="${CL_RST}
-	@echo -e ${CL_BLD}${CL_YLW}"Zip: "${CL_YLW} $(TARGET_PACKAGE)${CL_RST}
-	@echo -e ${CL_BLD}${CL_YLW}"MD5: "${CL_YLW}" `cat $(TARGET_PACKAGE).md5sum | awk '{print $$1}' `"${CL_RST}
-	@echo -e ${CL_BLD}${CL_YLW}"Size:"${CL_YLW}" `du -sh $(TARGET_PACKAGE) | awk '{print $$1}' `"${CL_RST}
+	@echo -e ${CL_BLD}${CL_YLW}"Zip: "${CL_YLW} CARDINAL_TARGET_PACKAGE)${CL_RST}
+	@echo -e ${CL_BLD}${CL_YLW}"MD5: "${CL_YLW}" `cat $(CARDINAL_TARGET_PACKAGE).md5sum | awk '{print $$1}' `"${CL_RST}
+	@echo -e ${CL_BLD}${CL_YLW}"Size:"${CL_YLW}" `du -sh $(CARDINAL_TARGET_PACKAGE) | awk '{print $$1}' `"${CL_RST}
 	@echo -e ${CL_BLD}${CL_CYN}"================================================================================"${CL_RST}
-aosprro: bacon
 
 bootzip: bootimage
 	$(BOOT_ZIP_FROM_IMAGE_SCRIPT) \
@@ -1980,7 +1979,7 @@ $(INTERNAL_UPDATE_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   $(IMG_FROM_TARGET_SCRIPT) -v \
 	   -p $(HOST_OUT) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
-
+	   
 .PHONY: updatepackage
 updatepackage: $(INTERNAL_UPDATE_PACKAGE_TARGET)
 

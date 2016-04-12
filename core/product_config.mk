@@ -181,7 +181,7 @@ include $(BUILD_SYSTEM)/device.mk
 
 # A CARDINAL build needs only the CARDINAL product makefiles.
 ifneq ($(CARDINAL_BUILD),)
-  all_product_configs := $(shell find device -path "*/$(CARDINAL_BUILD)/slim.mk")
+  all_product_configs := $(shell find device -path "*/$(CARDINAL_BUILD)/cardinal.mk")
 else
   ifneq ($(strip $(TARGET_BUILD_APPS)),)
   # An unbundled app build needs only the core product makefiles.

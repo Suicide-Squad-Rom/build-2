@@ -1912,8 +1912,16 @@ otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 cardinal: otapackage
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CARDINAL_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(CARDINAL_TARGET_PACKAGE) > $(CARDINAL_TARGET_PACKAGE).md5sum
-	@echo -e ${CL_CYN}"Package Complete: $(CARDINAL_TARGET_PACKAGE)"${CL_RST}
-  
+	@echo -e ${CL_BLD}${CL_CYN}"===============================-Package complete-==============================="${CL_RST}
+	@echo -e ${CL_BLD}${CL_YLW}"Zip: "${CL_YLW} $(CARDINAL_TARGET_PACKAGE)${CL_RST}
+	@echo -e ${CL_BLD}${CL_YLW}"MD5: "${CL_YLW}" `cat $(CARDINAL_TARGET_PACKAGE).md5sum | cut -d ' ' -f 1`"${CL_RST}
+ifeq ($(HOST_OS),darwin)
+	@echo -e ${CL_BLD}${CL_YLW}"Size:"${CL_YLW}" `ls -lah $(CARDINAL_TARGET_PACKAGE) | cut -d ' ' -f 9`"${CL_RST}
+else
+	@echo -e ${CL_BLD}${CL_YLW}"Size:"${CL_YLW}" `ls -lah $(CARDINAL_TARGET_PACKAGE) | cut -d ' ' -f 5`"${CL_RST}
+endif
+	@echo -e ${CL_BLD}${CL_CYN}"================================================================================"${CL_RST}
+
 bootzip: bootimage
 	$(BOOT_ZIP_FROM_IMAGE_SCRIPT) \
 	   $(recovery_fstab) \

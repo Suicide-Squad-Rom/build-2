@@ -1,4 +1,4 @@
-#
+MHC19Q#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,4 +18,4 @@
 # (like "CRB01").  It must be a single word, and is
 # capitalized by convention.
 
-export BUILD_ID=MHC19J
+export BUILD_ID=MHC19Q

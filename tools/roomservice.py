@@ -45,8 +45,8 @@ default_manifest = ".repo/manifest.xml"
 custom_local_manifest = ".repo/local_manifests/cardinal_manifest.xml"
 custom_default_revision = "crd6.0"
 custom_dependencies = "cardinal.dependencies"
-org_manifest = "Cardinal-AOSP"  # leave empty if org is provided in manifest
-org_display = "Cardinal-AOSP"  # needed for displaying
+org_manifest = "Cardinal-Devices"  # leave empty if org is provided in manifest
+org_display = "Cardinal-Devices"  # needed for displaying
 
 github_auth = None
 
